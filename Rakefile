@@ -7,4 +7,12 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList['test/**/test_*.rb']
 end
 
+task :console do
+  require "bundler/setup"
+  require "alphred"
+
+  require "pry"
+  Pry.start
+end
+
 task :default => :test

@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-
-require "bundler/setup"
-require "alphred"
-
-require "pry"
-Pry.start

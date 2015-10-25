@@ -1,0 +1,18 @@
+GIT
+  remote: git://github.com/kejadlen/alphred.git
+  revision: c4e6ad192278fcdf326e01dd4df77225345fc8d1
+  specs:
+    alphred (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  alphred!
+
+BUNDLED WITH
+   1.10.6

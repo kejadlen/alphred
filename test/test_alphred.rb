@@ -1,11 +1,12 @@
 require_relative "test_helper"
 
-class AlphredTest < Minitest::Test
-  def test_that_it_has_a_version_number
-    refute_nil ::Alphred::VERSION
-  end
-
-  def test_it_does_something_useful
-    assert false
+class TestItems < AlphredTest
+  def test_empty
+    items = Items.new
+    assert_equal <<-XML, items.to_xml
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+</items>
+    XML
   end
 end

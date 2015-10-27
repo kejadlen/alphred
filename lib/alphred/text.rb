@@ -10,8 +10,6 @@ module Alphred
     end
 
     def to_xml(xml)
-      return nil if self.copy.nil? && self.largetype.nil?
-
       xml.text copy, type: :copy unless self.copy.nil?
       xml.text largetype, type: :largetype unless self.largetype.nil?
     end

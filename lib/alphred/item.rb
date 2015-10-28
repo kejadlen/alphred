@@ -9,18 +9,20 @@ module Alphred
 
     attr_accessor *%i[ uid valid autocomplete title subtitle mods icon arg text ]
 
-    def initialize(title:, **attrs)
-      @title = title
+    def initialize(**kwargs)
+      raise ArgumentError.new("missing keyword: title") unless kwargs.has_key?(:title)
+
+      @title = kwargs[:title]
 
       %i[ uid valid autocomplete subtitle arg ].each do |attr|
-        self.instance_variable_set("@#{attr}", attrs[attr]) if attrs.has_key?(attr)
+        self.instance_variable_set("@#{attr}", kwargs[attr]) if kwargs.has_key?(attr)
       end
 
-      @icon = Icon(attrs[:icon]) if attrs.has_key?(:icon)
-      @text = Text.new(attrs[:text]) if attrs.has_key?(:text)
-      @mods = Mods.new(attrs[:mods]) if attrs.has_key?(:mods)
+      @icon = Icon(kwargs[:icon]) if kwargs.has_key?(:icon)
+      @text = Text.new(kwargs[:text]) if kwargs.has_key?(:text)
+      @mods = Mods.new(kwargs[:mods]) if kwargs.has_key?(:mods)
 
-      self.type = attrs[:type]
+      self.type = kwargs[:type] if kwargs.has_key?(:type)
     end
 
     def type=(type)

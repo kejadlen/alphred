@@ -6,9 +6,11 @@ module Alphred
 
     attr_accessor *%i[ value type ]
 
-    def initialize(value:, type: nil)
-      @value = value
-      self.type = type
+    def initialize(**kwargs)
+      raise ArgumentError.new("missing keyword: value") unless kwargs.has_key?(:value)
+
+      @value = kwargs[:value]
+      self.type = kwargs[:type] if kwargs.has_key?(:type)
     end
 
     def type=(type)

@@ -17,7 +17,7 @@ Can't tag #{version}: dirty working directory.
   end
 
   task :package do
-    sh "zip -r #{__FILE__.pathmap("%-1d").pathmap("%n.alfredworkflow")} *"
+    sh "zip -r #{Rake.application.original_dir.pathmap("%n.alfredworkflow")} *"
     rm_rf "vendor"
     sh "bundle install --no-deployment"
   end

@@ -16,10 +16,9 @@ Can't tag #{version}: dirty working directory.
     sh "git push origin #{version}"
   end
 
-  task :package do
+  task package: :vendor_check do
     sh "zip -r #{Rake.application.original_dir.pathmap("%n.alfredworkflow")} *"
     rm_rf "vendor"
-    sh "bundle install --no-deployment"
   end
 
   # Unfortunately, this can't be done automatically due to this chruby issue:

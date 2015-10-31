@@ -4,6 +4,7 @@ namespace :alphred do
   desc "Prepare a release, named after the directory"
   task :release, [:version] => [:tag, :package]
 
+  desc "Tag the current commit in git with VERSION"
   task :tag, [:version] do |t, args|
     version = args[:version]
 
@@ -15,6 +16,7 @@ Can't tag #{version}: dirty working directory.
     sh "git tag #{version}"
   end
 
+  desc "Create an alfredworkflow package with vendored dependencies"
   task :package do
     restore_bundler_config do
       cmd = "bundle install --standalone --path vendor/bundle --without development test"

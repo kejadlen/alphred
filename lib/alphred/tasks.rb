@@ -2,7 +2,7 @@ require "rake"
 
 namespace :alphred do
   desc "Prepare a release, named after the directory"
-  task :release, [:version] => [:vendor_check, :tag, :package]
+  task :release, [:version] => [:tag, :package]
 
   task :tag, [:version] do |t, args|
     version = args[:version]
@@ -13,31 +13,26 @@ Can't tag #{version}: dirty working directory.
     FAIL
 
     sh "git tag #{version}"
-    sh "git push origin #{version}"
   end
 
-  task package: :vendor_check do
-    sh "zip -r #{Rake.application.original_dir.pathmap("%n.alfredworkflow")} *"
+  task :package do
+    restore_bundler_config do
+      cmd = "bundle install --standalone --path vendor/bundle --without development test"
+      sh "chruby-exec 2.0.0 -- #{cmd}"
+    end
+    sh "zip -r #{application_dir.pathmap("%n.alfredworkflow")} *"
     rm_rf "vendor"
   end
 
-  # Unfortunately, this can't be done automatically due to this chruby issue:
-  #   https://github.com/postmodern/chruby/issues/193
-  task :vendor_check do
-    puts <<-PUTS
-Did you remember to vendor your dependencies?
-
-  rm -rf vendor
-  rake workflow:vendor[2.0.0]
-
-Continue? (y/[n])
-    PUTS
-    abort if STDIN.gets.chomp.downcase != ?y
+  def application_dir
+    Rake.application.original_dir
   end
 
-  desc "Vendor Ruby gem dependencies"
-  task :vendor, [:version] do |_, args|
-    version = args[:version]
-    sh "chruby-exec #{version} -- bundle install --deployment --standalone"
+  def restore_bundler_config
+    path = File.join(application_dir, ".bundle", "config")
+    config = File.read(path)
+    yield
+  ensure
+    File.write(path, config, mode: ?w)
   end
 end

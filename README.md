@@ -1,30 +1,102 @@
 # Alphred
 
-Simplifies making Alfred workflows.
+Alphred is a library for making Alfred workflows in Ruby. It's designed
+specifically for how I work, so assumes that you manage dependencies with
+[Bundler][bundler] and Rubies with [chruby][chruby].
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'alphred'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install alphred
+[bundler]: http://bundler.io/
+[chruby]: https://github.com/postmodern/chruby
 
 ## Usage
 
-### Items
+The [example script filter][scriptfilter] would look like this using Alphred:
 
-### Config
+[scriptfilter]: https://www.alfredapp.com/help/workflows/inputs/script-filter/
 
-### Release
+``` ruby
+items = Alphred::Items.new
+items << Alphred::Item.new(uid: "desktop",
+                           arg: "~/Desktop",
+                           valid: true,
+                           autocomplete: "Desktop",
+                           type: :file,
+                           title: "Desktop",
+                           subtitle: "~/Desktop",
+                           icon: { value: "~/Desktop", type: :fileicon })
+items << Alphred::Item.new(uid: "flickr",
+                           valid: false,
+                           autocomplete: "flickr",
+                           title: "Flickr",
+                           icon: "flickr.png")
+items << Alphred::Item.new(uid: "image",
+                           autocomplete: "My holiday photo",
+                           type: :file,
+                           title: "My holiday photo",
+                           subtitle: "~/Pictures/My holiday photo.jpg",
+                           icon: { value: "public.jpeg", type: :filetype })
+items << Alphred::Item.new(uid: "home",
+                           arg: "~/",
+                           valid: true,
+                           autocomplete: "Home",
+                           type: :file,
+                           title: "Home Folder",
+                           subtitle: "Home folder ~/",
+                           icon: { value: "~/", type: :fileicon },
+                           mods: { shift: "Subtext when shift is pressed",
+                                   fn: "Subtext when fn is pressed",
+                                   ctrl: "Subtext when ctrl is pressed",
+                                   alt: "Subtext when alt is pressed",
+                                   cmd: "Subtext when cmd is pressed" },
+                           text: { copy: "Text when copying",
+                                   largetype: "Text for LargeType" })
+items.to_xml
+```
+
+This produces the following XML:
+
+``` xml
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+  <item uid="desktop" arg="~/Desktop" autocomplete="Desktop" type="file" valid="yes">
+    <title>Desktop</title>
+    <subtitle>~/Desktop</subtitle>
+    <icon type="fileicon">~/Desktop</icon>
+  </item>
+  <item uid="flickr" autocomplete="flickr" valid="no">
+    <title>Flickr</title>
+    <icon>flickr.png</icon>
+  </item>
+  <item uid="image" autocomplete="My holiday photo" type="file">
+    <title>My holiday photo</title>
+    <subtitle>~/Pictures/My holiday photo.jpg</subtitle>
+    <icon type="filetype">public.jpeg</icon>
+  </item>
+  <item uid="home" arg="~/" autocomplete="Home" type="file" valid="yes">
+    <title>Home Folder</title>
+    <subtitle>Home folder ~/</subtitle>
+    <icon type="fileicon">~/</icon>
+    <subtitle mod="shift">Subtext when shift is pressed</subtitle>
+    <subtitle mod="fn">Subtext when fn is pressed</subtitle>
+    <subtitle mod="ctrl">Subtext when ctrl is pressed</subtitle>
+    <subtitle mod="alt">Subtext when alt is pressed</subtitle>
+    <subtitle mod="cmd">Subtext when cmd is pressed</subtitle>
+    <text type="copy">Text when copying</text>
+    <text type="largetype">Text for LargeType</text>
+  </item>
+</items>
+```
+
+### Releasing
+
+Including `alphred/tasks` in your `Rakefile` will allow access to Alphred's
+Rake tasks for releasing a workflow. `release` will tag the current commit with
+the provided version and create a .alfredworkflow package with vendored gem
+dependencies.
+
+## TODO
+
+- Make workflow configuration easier.
+- Be able to release using non-chruby Ruby version managers?
 
 ## Development
 

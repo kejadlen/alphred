@@ -7,14 +7,14 @@ module Alphred
   class Item
     VALID_TYPES = %i[ default file file_skipcheck ]
 
-    attr_accessor *%i[ uid valid autocomplete title subtitle mods icon arg text ]
+    attr_accessor *%i[ uid arg valid autocomplete title subtitle mods icon text ]
 
     def initialize(**kwargs)
       raise ArgumentError.new("missing keyword: title") unless kwargs.has_key?(:title)
 
       @title = kwargs[:title]
 
-      %i[ uid valid autocomplete subtitle arg ].each do |attr|
+      %i[ uid arg valid autocomplete subtitle ].each do |attr|
         self.instance_variable_set("@#{attr}", kwargs[attr]) if kwargs.has_key?(attr)
       end
 
@@ -41,7 +41,6 @@ module Alphred
         xml.title self.title
         xml.subtitle self.subtitle unless self.subtitle.nil?
         self.icon.to_xml(xml) unless self.icon.nil?
-        xml.arg self.arg unless self.arg.nil?
         self.mods.to_xml(xml) unless self.mods.nil?
         self.text.to_xml(xml) unless self.text.nil?
       end
@@ -49,7 +48,7 @@ module Alphred
 
     def attrs
       attrs = {}
-      %i[ uid autocomplete type ].each do |attr|
+      %i[ uid arg autocomplete type ].each do |attr|
         value = self.send(attr)
         attrs[attr] = value unless value.nil?
       end

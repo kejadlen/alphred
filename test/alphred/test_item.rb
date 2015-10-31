@@ -17,11 +17,12 @@ class TestItem < AlphredTest
   def test_attributes
     item = Item.new(title: "title",
                     uid: "uid",
+                    arg: "arg",
                     valid: true,
                     autocomplete: "autocomplete",
                     type: :file)
     assert_equal <<-XML, item.to_xml
-<item uid="uid" autocomplete="autocomplete" type="file" valid="yes">
+<item uid="uid" arg="arg" autocomplete="autocomplete" type="file" valid="yes">
   <title>title</title>
 </item>
     XML
@@ -45,14 +46,12 @@ class TestItem < AlphredTest
     item = Item.new(title: "title",
                     subtitle: "subtitle",
                     icon: "icon",
-                    arg: "arg",
                     text: { copy: "copy", largetype: "largetype" })
     assert_equal <<-XML, item.to_xml
 <item>
   <title>title</title>
   <subtitle>subtitle</subtitle>
   <icon>icon</icon>
-  <arg>arg</arg>
   <text type="copy">copy</text>
   <text type="largetype">largetype</text>
 </item>

@@ -4,8 +4,8 @@ module Alphred
   class Items < DelegateClass(Array)
     attr_reader :items
 
-    def initialize
-      @items = []
+    def initialize(*items)
+      @items = items
       super(@items)
     end
 

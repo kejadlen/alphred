@@ -1,4 +1,5 @@
 require "builder"
+require "delegate"
 
 module Alphred
   class Items < DelegateClass(Array)

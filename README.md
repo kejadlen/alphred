@@ -124,6 +124,7 @@ dependencies.
 ## TODO
 
 - Add development mode for easier debugging. (Nicer errors, etc.)
+- Rake task for installing to Alfred
 
 ## Development
 

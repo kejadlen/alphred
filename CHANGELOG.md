@@ -1,4 +1,6 @@
 ## Unreleased
+### Added
+- Push tags when releasing.
 
 ## [1.1.1] - 2015-11-05
 ### Changed

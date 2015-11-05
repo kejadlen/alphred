@@ -14,6 +14,7 @@ Can't tag #{version}: dirty working directory.
     FAIL
 
     sh "git tag #{version}"
+    sh "git push --tags"
   end
 
   desc "Create an alfredworkflow package with vendored dependencies"

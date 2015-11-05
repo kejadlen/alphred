@@ -1,4 +1,6 @@
 ## Unreleased
+
+## [1.1.1] - 2015-11-05
 ### Changed
 - Don't crash when the config file doesn't exist.
 

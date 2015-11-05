@@ -1,6 +1,15 @@
 require_relative "../test_helper"
 
 class TestConfig < AlphredTest
+  def setup
+    @original_alfred_workflow_data = ENV["alfred_workflow_data"]
+    ENV["alfred_workflow_data"] = File.expand_path("../..", __FILE__)
+  end
+
+  def teardown
+    ENV["alfred_workflow_data"] = @original_alfred_workflow_data
+  end
+
   def test_load
     config = Config.load(foo: "bar", baz: "qux")
 
@@ -38,5 +47,10 @@ class TestConfig < AlphredTest
   </item>
 </items>
     XML
+  end
+
+  def test_no_config
+    ENV["alfred_workflow_data"] = "wat"
+    config = Config.load(foo: "bar")
   end
 end

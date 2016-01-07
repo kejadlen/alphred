@@ -121,11 +121,6 @@ Rake tasks for releasing a workflow. `release` will tag the current commit with
 the provided version and create a .alfredworkflow package with vendored gem
 dependencies.
 
-## TODO
-
-- Add development mode for easier debugging. (Nicer errors, etc.)
-- Rake task for installing to Alfred
-
 ## Development
 
 After checking out the repo, run `bundle install` to install dependencies.
@@ -150,3 +145,6 @@ the [Contributor Covenant](contributor-covenant.org) code of conduct.
 The gem is available as open source under the terms of the [MIT
 License](http://opensource.org/licenses/MIT).
 
+## Credits
+
+- [Close]() by Berkay Sargın from the Noun Project

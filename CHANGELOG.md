@@ -1,4 +1,4 @@
-## Unreleased
+## [1.2.0] - 2016-04-04
 ### Added
 - Push tags when releasing.
 - Add better error handling.

@@ -1,9 +1,9 @@
-require "json"
+require 'json'
 
 module Alphred
   class Config
     def self.load(**defaults)
-      config = self.new(**defaults)
+      config = new(**defaults)
       config.load!
       config
     end
@@ -15,23 +15,24 @@ module Alphred
     end
 
     def load!
-      return unless File.exist?(self.path)
-      self.data.merge!(JSON.load(File.open(self.path)))
+      return unless File.exist?(path)
+      data.merge!(JSON.load(File.open(path)))
     end
 
     def update!(json)
       data = self.data.merge(JSON.load(json))
-      File.write(self.path, JSON.dump(data), mode: ?w)
+      FileUtils.mkdir_p(File.dirname(path))
+      File.write(path, JSON.dump(data), mode: ?w)
     end
 
     def [](key)
-      self.data[key.to_s]
+      data[key.to_s]
     end
 
     def filter_xml(filter=nil)
-      filter ||= ""
+      filter ||= ''
 
-      items = self.data.map do |key, value|
+      items = data.map do |key, value|
         title = if filter.empty?
                   "Unset #{key}"
                 else
@@ -48,8 +49,10 @@ module Alphred
       Items.new(*items).to_xml
     end
 
+    private
+
     def path
-      File.join(ENV["alfred_workflow_data"], 'config.json')
+      File.join(ENV['alfred_workflow_data'], 'config.json')
     end
   end
 end

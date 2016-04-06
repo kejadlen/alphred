@@ -1,3 +1,7 @@
+## [1.2.1] - 2016-04-05
+### Fixed
+- Handle when config doesn't already exist.
+
 ## [1.2.0] - 2016-04-04
 ### Added
 - Push tags when releasing.

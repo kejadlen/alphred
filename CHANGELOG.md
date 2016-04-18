@@ -1,3 +1,8 @@
+## Unreleased
+### Fixed
+- Require FileUtils for Config.
+- Require version arg for the Rake tag task.
+
 ## [1.2.1] - 2016-04-05
 ### Fixed
 - Handle when config doesn't already exist.

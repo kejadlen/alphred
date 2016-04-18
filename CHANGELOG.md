@@ -1,4 +1,4 @@
-## Unreleased
+## [1.2.2] - 2016-04-17
 ### Fixed
 - Require FileUtils for Config.
 - Require version arg for the Rake tag task.

@@ -4,6 +4,7 @@ require 'alphred/struct'
 class TestStruct < Minitest::Test
   class Foo < Alphred::Struct
     attribute :name
+    attribute :address, optional: true
   end
 
   def setup
@@ -11,7 +12,7 @@ class TestStruct < Minitest::Test
   end
 
   def test_attributes
-    assert_equal %i[ name ], Foo.attributes.map(&:name)
+    assert_equal %i[ name address ], Foo.attributes.map(&:name)
     assert_equal({ name: 'Bob' }, @foo.attributes)
   end
 

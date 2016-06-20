@@ -1,6 +1,7 @@
-require_relative "../test_helper"
+require_relative '../test_helper'
+require 'alphred/mods'
 
-class TestMods < AlphredTest
+class TestMods < Test
   def assert_mods(expected, mods)
     xml = Builder::XmlMarkup.new(indent: 2)
     actual = xml.item { mods.to_xml(xml) }

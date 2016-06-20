@@ -1,6 +1,7 @@
-require_relative "../test_helper"
+require_relative '../test_helper'
+require 'alphred/item'
 
-class TestItem < AlphredTest
+class TestItem < Test
   def test_title_required
     assert_raises(ArgumentError) { Item.new }
   end

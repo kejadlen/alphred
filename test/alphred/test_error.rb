@@ -1,6 +1,7 @@
-require_relative "../test_helper"
+require_relative '../test_helper'
+require 'alphred/error'
 
-class TestError < AlphredTest
+class TestError < Test
   class FakeException < StandardError
     attr_reader *%i[ backtrace ]
 

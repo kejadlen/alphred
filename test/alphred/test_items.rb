@@ -1,6 +1,7 @@
-require_relative "../test_helper"
+require_relative '../test_helper'
+require 'alphred/items'
 
-class TestItems < AlphredTest
+class TestItems < Test
   def test_empty
     items = Items.new
     assert_equal <<-XML, items.to_xml

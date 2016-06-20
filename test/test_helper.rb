@@ -1,8 +1,7 @@
-require "minitest/autorun"
+require 'minitest/autorun'
 
-$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
-require "alphred"
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
-class AlphredTest < Minitest::Test
+class Test < Minitest::Test
   include Alphred
 end

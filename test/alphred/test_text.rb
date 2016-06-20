@@ -1,6 +1,7 @@
-require_relative "../test_helper"
+require_relative '../test_helper'
+require 'alphred/text'
 
-class TestText < AlphredTest
+class TestText < Test
   def assert_text(expected, text)
     xml = Builder::XmlMarkup.new(indent: 2)
     actual = xml.item { text.to_xml(xml) }

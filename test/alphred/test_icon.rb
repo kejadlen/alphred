@@ -1,6 +1,7 @@
-require_relative "../test_helper"
+require_relative '../test_helper'
+require 'alphred/icon'
 
-class TestIcon < AlphredTest
+class TestIcon < Test
   def test_icon
     icon = Icon.new(value: "value")
     assert_equal <<-XML, icon.to_xml

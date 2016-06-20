@@ -86,34 +86,6 @@ This produces the following XML:
 </items>
 ```
 
-### Workflow Configuration
-
-`Alphred::Config` provides some helpers for managing configuration that should
-persist when updating the workflow. This configuration is stored in an JSON
-file in the workflow data directory.
-
-``` ruby
-# config.rb
-
-module Workflow
-  defaults = { foo: "bar" }
-  Config = Alphred::Config.new(**defaults)
-```
-
-The corresponding Script Filter input and Run Action output then look like this:
-
-``` shell
-# script filter
-
-ruby -r./config -e'puts Workflow::Config.filter_xml("{query}")'
-```
-
-``` shell
-# run action
-
-ruby -r./config -e'Forecast::Config.update!("{query}")'
-```
-
 ### Releasing
 
 Including `alphred/tasks` in your `Rakefile` will allow access to Alphred's

@@ -7,13 +7,14 @@ class TestStruct < Minitest::Test
     attribute :address, optional: true
   end
 
-  def setup
-    @foo = Foo.new(name: 'Bob')
-  end
-
   def test_attributes
     assert_equal %i[ name address ], Foo.attributes.map(&:name)
-    assert_equal({ name: 'Bob' }, @foo.attributes)
+
+    foo = Foo.new(name: 'Bob')
+    assert_equal({ name: 'Bob' }, foo.attributes)
+
+    foo = Foo.new(name: 'Bob', address: '123 Main St')
+    assert_equal({ name: 'Bob', address: '123 Main St' }, foo.attributes)
   end
 
   def test_required_attribute

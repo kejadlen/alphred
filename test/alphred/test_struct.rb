@@ -1,6 +1,8 @@
 require_relative '../test_helper'
 require 'alphred/struct'
 
+require 'json'
+
 class TestStruct < Minitest::Test
   class Foo < Alphred::Struct
     attribute :name
@@ -28,5 +30,23 @@ class TestStruct < Minitest::Test
   def test_coerce
     foo = Foo.new(name: 'Bob', age: '123')
     assert_equal 123, foo.age
+  end
+
+  def test_json
+    foo = Foo.new(name: 'Bob')
+    assert_equal <<-JSON.chomp, JSON.pretty_generate(foo)
+{
+  "name": "Bob"
+}
+    JSON
+
+    foo = Foo.new(name: 'Bob', address: '123 Main St', age: '123')
+    assert_equal <<-JSON.chomp, JSON.pretty_generate(foo)
+{
+  "name": "Bob",
+  "address": "123 Main St",
+  "age": 123
+}
+    JSON
   end
 end

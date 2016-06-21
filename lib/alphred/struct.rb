@@ -1,3 +1,5 @@
+require 'json'
+
 module Alphred
   class Struct
     def self.attribute(name, **options)
@@ -21,6 +23,10 @@ module Alphred
 
         attrs[attr.name] = attr.coerce.call(input.fetch(attr.name))
       end
+    end
+
+    def to_json(options=nil)
+      attributes.to_json(options)
     end
 
     class Attribute

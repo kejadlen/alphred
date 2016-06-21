@@ -2,6 +2,10 @@ module Alphred
   class Struct
     def self.attribute(name, **options)
       attributes << Attribute.new(name, **options)
+
+      define_method(name) do
+        attributes[name]
+      end
     end
 
     def self.attributes

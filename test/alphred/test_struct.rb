@@ -5,9 +5,9 @@ require 'json'
 
 class TestStruct < Minitest::Test
   class Foo < Alphred::Struct
-    attribute :name
-    attribute :address, optional: true
-    attribute :age, optional: true, coerce: ->(x) { x.to_i }
+    attribute :name, required: true
+    attribute :address
+    attribute :age, coerce: ->(x) { x.to_i }
   end
 
   def test_attributes
@@ -19,7 +19,7 @@ class TestStruct < Minitest::Test
   end
 
   def test_required
-    assert_raises { Foo.new }
+    assert_raises { Foo.new(address: '123 Main St') }
   end
 
   def test_optional

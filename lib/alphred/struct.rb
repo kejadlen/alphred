@@ -19,7 +19,7 @@ module Alphred
 
     def initialize(**input)
       @attributes = self.class.attributes.each.with_object({}) do |attr, attrs|
-        next if attr.optional? && !input.has_key?(attr.name)
+        next unless attr.required? || input.has_key?(attr.name)
 
         attrs[attr.name] = attr.coerce.call(input.fetch(attr.name))
       end
@@ -34,12 +34,12 @@ module Alphred
 
       def initialize(name, **options)
         @name = name
-        @optional = options.fetch(:optional, false)
+        @required = options.fetch(:required, false)
         @coerce = options.fetch(:coerce, ->(x) { x })
       end
 
-      def optional?
-        !!@optional
+      def required?
+        @required
       end
     end
   end

@@ -13,13 +13,15 @@ class TestStruct < Minitest::Test
     foo = Foo.new(name: 'Bob')
     assert_equal({ name: 'Bob' }, foo.attributes)
     assert_equal 'Bob', foo.name
+  end
 
+  def test_required
+    assert_raises { Foo.new }
+  end
+
+  def test_optional
     foo = Foo.new(name: 'Bob', address: '123 Main St')
     assert_equal({ name: 'Bob', address: '123 Main St' }, foo.attributes)
     assert_equal '123 Main St', foo.address
-  end
-
-  def test_required_attribute
-    assert_raises { Foo.new }
   end
 end

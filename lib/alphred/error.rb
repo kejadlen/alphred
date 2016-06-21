@@ -1,9 +1,9 @@
-require_relative "item"
-require_relative "items"
+require_relative 'item'
+require_relative 'items'
 
 module Alphred
   class Error < StandardError
-    ASSETS = File.expand_path("../../../assets", __FILE__)
+    ASSETS = File.expand_path('../../../assets', __FILE__)
 
     def self.try
       yield
@@ -18,7 +18,7 @@ module Alphred
     end
 
     def to_items
-      icon = File.join(ASSETS, "close.png")
+      icon = File.join(ASSETS, 'close.png')
       items = [ Alphred::Item.new(title: "#{self.error.class}: #{self.error}",
                                   icon: icon) ]
       items.concat(self.backtrace_items)
@@ -30,13 +30,13 @@ module Alphred
     end
 
     def backtrace_items
-      icon = File.join(ASSETS, "more.png")
+      icon = File.join(ASSETS, 'more.png')
 
-      base_dirs = $LOAD_PATH + [ENV["alfred_preferences"]]
+      base_dirs = $LOAD_PATH + [ENV['alfred_preferences']]
       to_delete = /^#{base_dirs.join(?|)}/
 
       self.error.backtrace.map {|line|
-        title = line.sub(to_delete, "...")
+        title = line.sub(to_delete, '...')
         Alphred::Item.new(title: title,
                           subtitle: line,
                           arg: line,

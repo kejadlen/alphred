@@ -5,10 +5,11 @@ class TestStruct < Minitest::Test
   class Foo < Alphred::Struct
     attribute :name
     attribute :address, optional: true
+    attribute :age, optional: true, coerce: ->(x) { x.to_i }
   end
 
   def test_attributes
-    assert_equal %i[ name address ], Foo.attributes.map(&:name)
+    assert_equal %i[ name address age ], Foo.attributes.map(&:name)
 
     foo = Foo.new(name: 'Bob')
     assert_equal({ name: 'Bob' }, foo.attributes)
@@ -21,7 +22,11 @@ class TestStruct < Minitest::Test
 
   def test_optional
     foo = Foo.new(name: 'Bob', address: '123 Main St')
-    assert_equal({ name: 'Bob', address: '123 Main St' }, foo.attributes)
     assert_equal '123 Main St', foo.address
+  end
+
+  def test_coerce
+    foo = Foo.new(name: 'Bob', age: '123')
+    assert_equal 123, foo.age
   end
 end

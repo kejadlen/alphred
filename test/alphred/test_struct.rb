@@ -8,10 +8,11 @@ class TestStruct < Minitest::Test
     attribute :name, required: true
     attribute :address
     attribute :age, coerce: ->(x) { x.to_i }
+    attribute :state, enum: %i[ VA WA ]
   end
 
   def test_attributes
-    assert_equal %i[ name address age ], Foo.attributes.map(&:name)
+    assert_equal %i[ name address age state ], Foo.attributes.map(&:name)
 
     foo = Foo.new(name: 'Bob')
     assert_equal({ name: 'Bob' }, foo.attributes)
@@ -30,6 +31,13 @@ class TestStruct < Minitest::Test
   def test_coerce
     foo = Foo.new(name: 'Bob', age: '123')
     assert_equal 123, foo.age
+  end
+
+  def test_enum
+    foo = Foo.new(name: 'Bob', state: :WA)
+    assert_equal :WA, foo.state
+
+    assert_raises { Foo.new(name: 'Bob', state: :WV) }
   end
 
   def test_json

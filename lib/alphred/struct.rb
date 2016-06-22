@@ -21,7 +21,10 @@ module Alphred
       @attributes = self.class.attributes.each.with_object({}) do |attr, attrs|
         next unless attr.required? || input.has_key?(attr.name)
 
-        attrs[attr.name] = attr.coerce.call(input.fetch(attr.name))
+        value = input.fetch(attr.name)
+        coerced = attr.coerce.call(value)
+        raise ArgumentError if attr.enum && !attr.enum.include?(coerced)
+        attrs[attr.name] = coerced
       end
     end
 
@@ -30,12 +33,13 @@ module Alphred
     end
 
     class Attribute
-      attr_reader :name, :coerce
+      attr_reader :name, :coerce, :enum
 
       def initialize(name, **options)
         @name = name
         @required = options.fetch(:required, false)
         @coerce = options.fetch(:coerce, ->(x) { x })
+        @enum = options[:enum]
       end
 
       def required?

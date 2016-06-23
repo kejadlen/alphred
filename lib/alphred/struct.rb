@@ -22,22 +22,28 @@ module Alphred
     attr_reader :attributes
 
     def initialize(**input)
-      @attributes = self.class.attributes.each.with_object({}) do |attr, attrs|
-        next unless attr.required? || input.has_key?(attr.name)
+      validate_input(input)
 
-        value = input.delete(attr.name) {
-          raise RequiredAttributeError.new(attr.name)
-        }
-        coerced = attr.coerce.call(value)
-        raise InvalidEnumError.new(coerced) if attr.enum && !attr.enum.include?(coerced)
-        attrs[attr.name] = coerced
-      end
-
-      raise InvalidAttributeError.new(input.keys.join(', ')) unless input.empty?
+      @attributes = self.class.attributes.select { |attr|
+        attr.required? || input.keys.include?(attr.name)
+      }.reduce({}) { |hash, attr|
+        hash.merge(attr.value_from(input))
+      }
     end
 
     def to_json(options=nil)
       attributes.to_json(options)
+    end
+
+    private
+
+    def validate_input(input)
+      attribute_names = self.class.attributes.map(&:name)
+      invalid_keys = input.keys.reject {|key| attribute_names.include?(key) }
+      unless invalid_keys.empty?
+        msg = "Invalid attribute(s): #{invalid_keys.join(', ')}"
+        raise InvalidAttributeError.new(msg)
+      end
     end
 
     class Attribute
@@ -51,7 +57,14 @@ module Alphred
       end
 
       def required?
-        @required
+        !!@required
+      end
+
+      def value_from(hash)
+        uncoerced = hash.fetch(name) { raise RequiredAttributeError.new(name) }
+        coerced = coerce.call(uncoerced)
+        raise InvalidEnumError.new(coerced) if enum && !enum.include?(coerced)
+        { name => coerced }
       end
     end
   end

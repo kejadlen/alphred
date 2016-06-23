@@ -2,6 +2,10 @@ require 'json'
 
 module Alphred
   class Struct
+    class RequiredAttributeError < StandardError; end
+    class InvalidEnumError < StandardError; end
+    class InvalidAttributeError < StandardError; end
+
     def self.attribute(name, **options)
       attributes << Attribute.new(name, **options)
 
@@ -21,11 +25,15 @@ module Alphred
       @attributes = self.class.attributes.each.with_object({}) do |attr, attrs|
         next unless attr.required? || input.has_key?(attr.name)
 
-        value = input.fetch(attr.name)
+        value = input.delete(attr.name) {
+          raise RequiredAttributeError.new(attr.name)
+        }
         coerced = attr.coerce.call(value)
-        raise ArgumentError if attr.enum && !attr.enum.include?(coerced)
+        raise InvalidEnumError.new(coerced) if attr.enum && !attr.enum.include?(coerced)
         attrs[attr.name] = coerced
       end
+
+      raise InvalidAttributeError.new(input.keys.join(', ')) unless input.empty?
     end
 
     def to_json(options=nil)

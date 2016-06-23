@@ -20,7 +20,9 @@ class TestStruct < Minitest::Test
   end
 
   def test_required
-    assert_raises { Foo.new(address: '123 Main St') }
+    assert_raises(Alphred::Struct::RequiredAttributeError) {
+      Foo.new(address: '123 Main St')
+    }
   end
 
   def test_optional
@@ -37,7 +39,15 @@ class TestStruct < Minitest::Test
     foo = Foo.new(name: 'Bob', state: :WA)
     assert_equal :WA, foo.state
 
-    assert_raises { Foo.new(name: 'Bob', state: :WV) }
+    assert_raises(Alphred::Struct::InvalidEnumError) {
+      Foo.new(name: 'Bob', state: :WV)
+    }
+  end
+
+  def test_invalid_attributes
+    assert_raises(Alphred::Struct::InvalidAttributeError) {
+      Foo.new(name: 'Bob', addr: '123 Main St')
+    }
   end
 
   def test_json

@@ -1,6 +1,8 @@
 require_relative 'item'
 require_relative 'items'
 
+require 'json'
+
 module Alphred
   class Error < StandardError
     ASSETS = File.expand_path('../../../assets', __FILE__)
@@ -8,7 +10,7 @@ module Alphred
     def self.try
       yield
     rescue Exception => e
-      puts self.new(e).to_xml
+      print self.new(e).to_json
     end
 
     attr_reader :error
@@ -17,16 +19,16 @@ module Alphred
       @error = error
     end
 
+    def to_json(options=nil)
+      to_items.to_json(options)
+    end
+
     def to_items
       icon = File.join(ASSETS, 'close.png')
       items = [ Alphred::Item.new(title: "#{self.error.class}: #{self.error}",
                                   icon: icon) ]
       items.concat(self.backtrace_items)
-      Alphred::Items.new(*items)
-    end
-
-    def to_xml
-      self.to_items.to_xml
+      Items[*items]
     end
 
     def backtrace_items
@@ -35,12 +37,14 @@ module Alphred
       base_dirs = $LOAD_PATH + [ENV['alfred_preferences']]
       to_delete = /^#{base_dirs.join(?|)}/
 
-      self.error.backtrace.map {|line|
+      self.error.backtrace.map { |line|
         title = line.sub(to_delete, '...')
-        Alphred::Item.new(title: title,
-                          subtitle: line,
-                          arg: line,
-                          icon: icon)
+        Item.new(
+          title: title,
+          subtitle: line,
+          arg: line,
+          icon: icon,
+        )
       }
     end
   end

@@ -14,29 +14,8 @@ class TestError < Test
 
   def test_error
     icon_path = File.expand_path('../../../assets', __FILE__)
-    output = <<-OUTPUT
-<?xml version="1.0" encoding="UTF-8"?>
-<items>
-  <item>
-    <title>TestError::FakeException: OMG!</title>
-    <icon>#{File.join(icon_path, 'close.png')}</icon>
-  </item>
-  <item arg="one">
-    <title>...one</title>
-    <subtitle>one</subtitle>
-    <icon>#{File.join(icon_path, 'more.png')}</icon>
-  </item>
-  <item arg="two">
-    <title>...two</title>
-    <subtitle>two</subtitle>
-    <icon>#{File.join(icon_path, 'more.png')}</icon>
-  </item>
-  <item arg="three">
-    <title>...three</title>
-    <subtitle>three</subtitle>
-    <icon>#{File.join(icon_path, 'more.png')}</icon>
-  </item>
-</items>
+    output = <<-OUTPUT.chomp
+{"items":[{"title":"TestError::FakeException: OMG!","icon":{"path":"#{File.join(icon_path, 'close.png')}"}},{"title":"...one","subtitle":"one","arg":"one","icon":{"path":"#{File.join(icon_path, 'more.png')}"}},{"title":"...two","subtitle":"two","arg":"two","icon":{"path":"#{File.join(icon_path, 'more.png')}"}},{"title":"...three","subtitle":"three","arg":"three","icon":{"path":"#{File.join(icon_path, 'more.png')}"}}]}
     OUTPUT
 
     assert_output(output) do

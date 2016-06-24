@@ -1,8 +1,13 @@
-require "builder"
-require "delegate"
+require 'delegate'
+
+require 'json'
 
 module Alphred
   class Items < DelegateClass(Array)
+    def self.[](*args)
+      new(*args)
+    end
+
     attr_reader :items
 
     def initialize(*items)
@@ -10,14 +15,8 @@ module Alphred
       super(@items)
     end
 
-    def to_xml
-      xml = Builder::XmlMarkup.new(indent: 2)
-      xml.instruct! :xml
-      xml.items do
-        self.items.each do |item|
-          item.to_xml(xml)
-        end
-      end
+    def to_json(options=nil)
+      { items: items }.to_json(options)
     end
   end
 end

@@ -29,8 +29,11 @@ module Alphred
   end
 
   class Mods < Struct
+    attribute :ctrl, coerce: ->(x) { Mod.new(x) }
     attribute :alt, coerce: ->(x) { Mod.new(x) }
     attribute :cmd, coerce: ->(x) { Mod.new(x) }
+    attribute :fn, coerce: ->(x) { Mod.new(x) }
+    attribute :shift, coerce: ->(x) { Mod.new(x) }
   end
 
   class Text < Struct

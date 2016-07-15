@@ -1,3 +1,15 @@
+## [2.0.0] - 2016-05-15
+### Added
+- `Alphred::Items[...]` convenience method.
+
+### Changed
+- `to_xml` has been deprecated in favor of `to_json`.
+- `mods` in an `Alphred::Item` are declared differently now.
+
+### Removed
+- `Alphred::Config` has been deprecated since Alfred 3 supports environment
+variables.
+
 ## [1.2.2] - 2016-04-17
 ### Fixed
 - Require FileUtils for Config.

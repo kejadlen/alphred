@@ -14,76 +14,122 @@ The [example script filter][scriptfilter] would look like this using Alphred:
 [scriptfilter]: https://www.alfredapp.com/help/workflows/inputs/script-filter/
 
 ``` ruby
-items = Alphred::Items.new(
-  Alphred::Item.new(uid: "desktop",
-                    arg: "~/Desktop",
-                    valid: true,
-                    autocomplete: "Desktop",
-                    type: :file,
-                    title: "Desktop",
-                    subtitle: "~/Desktop",
-                    icon: { value: "~/Desktop", type: :fileicon }),
-  Alphred::Item.new(uid: "flickr",
-                    valid: false,
-                    autocomplete: "flickr",
-                    title: "Flickr",
-                    icon: "flickr.png"),
-  Alphred::Item.new(uid: "image",
-                    autocomplete: "My holiday photo",
-                    type: :file,
-                    title: "My holiday photo",
-                    subtitle: "~/Pictures/My holiday photo.jpg",
-                    icon: { value: "public.jpeg", type: :filetype }),
-  Alphred::Item.new(uid: "home",
-                    arg: "~/",
-                    valid: true,
-                    autocomplete: "Home",
-                    type: :file,
-                    title: "Home Folder",
-                    subtitle: "Home folder ~/",
-                    icon: { value: "~/", type: :fileicon },
-                    mods: { shift: "Subtext when shift is pressed",
-                            fn: "Subtext when fn is pressed",
-                            ctrl: "Subtext when ctrl is pressed",
-                            alt: "Subtext when alt is pressed",
-                            cmd: "Subtext when cmd is pressed" },
-                    text: { copy: "Text when copying",
-                            largetype: "Text for LargeType" }))
-items.to_xml
+items = Items[
+  Item.new(
+    uid: 'desktop',
+    type: 'file',
+    title: 'Desktop',
+    subtitle: '~/Desktop',
+    arg: '~/Desktop',
+    autocomplete: 'Desktop',
+    icon: { type: :fileicon, path: '~/Desktop' },
+  ),
+  Item.new(
+    valid: false,
+    uid: 'flickr',
+    title: 'Flickr',
+    icon: 'flickr.png'
+  ),
+  Item.new(
+    uid: 'image',
+    type: 'file',
+    title: 'My holiday photo',
+    subtitle: '~/Pictures/My holiday photo.jpg',
+    autocomplete: 'My holiday photo',
+    icon: { type: :filetype, path: 'public.jpeg' },
+  ),
+  Item.new(
+    valid: false,
+    uid: 'alfredapp',
+    title: 'Alfred Website',
+    subtitle: 'https://www.alfredapp.com/',
+    arg: 'alfredapp.com',
+    autocomplete: 'Alfred Website',
+    quicklookurl: 'https://www.alfredapp.com/',
+    mods: {
+      alt: {
+        valid: true,
+        arg: 'alfredapp.com/powerpack',
+        subtitle: 'https://www.alfredapp.com/powerpack/',
+      },
+      cmd: {
+        valid: true,
+        arg: 'alfredapp.com/powerpack/buy/',
+        subtitle: 'https://www.alfredapp.com/powerpack/buy/',
+      },
+    },
+    text: {
+      copy: 'https://www.alfredapp.com/ (text here to copy)',
+      largetype: 'https://www.alfredapp.com/ (text here for large type)',
+    },
+  ),
+]
+items.to_json
 ```
 
-This produces the following XML:
+This produces the following JSON:
 
-``` xml
-<?xml version="1.0" encoding="UTF-8"?>
-<items>
-  <item uid="desktop" arg="~/Desktop" autocomplete="Desktop" type="file" valid="yes">
-    <title>Desktop</title>
-    <subtitle>~/Desktop</subtitle>
-    <icon type="fileicon">~/Desktop</icon>
-  </item>
-  <item uid="flickr" autocomplete="flickr" valid="no">
-    <title>Flickr</title>
-    <icon>flickr.png</icon>
-  </item>
-  <item uid="image" autocomplete="My holiday photo" type="file">
-    <title>My holiday photo</title>
-    <subtitle>~/Pictures/My holiday photo.jpg</subtitle>
-    <icon type="filetype">public.jpeg</icon>
-  </item>
-  <item uid="home" arg="~/" autocomplete="Home" type="file" valid="yes">
-    <title>Home Folder</title>
-    <subtitle>Home folder ~/</subtitle>
-    <icon type="fileicon">~/</icon>
-    <subtitle mod="shift">Subtext when shift is pressed</subtitle>
-    <subtitle mod="fn">Subtext when fn is pressed</subtitle>
-    <subtitle mod="ctrl">Subtext when ctrl is pressed</subtitle>
-    <subtitle mod="alt">Subtext when alt is pressed</subtitle>
-    <subtitle mod="cmd">Subtext when cmd is pressed</subtitle>
-    <text type="copy">Text when copying</text>
-    <text type="largetype">Text for LargeType</text>
-  </item>
-</items>
+``` json
+{
+  "items": [
+    {
+      "uid": "desktop",
+      "type": "file",
+      "title": "Desktop",
+      "subtitle": "~/Desktop",
+      "arg": "~/Desktop",
+      "autocomplete": "Desktop",
+      "icon": {
+        "type": "fileicon",
+        "path": "~/Desktop"
+      }
+    },
+    {
+      "valid": false,
+      "uid": "flickr",
+      "title": "Flickr",
+      "icon": {
+        "path": "flickr.png"
+      }
+    },
+    {
+      "uid": "image",
+      "type": "file",
+      "title": "My holiday photo",
+      "subtitle": "~/Pictures/My holiday photo.jpg",
+      "autocomplete": "My holiday photo",
+      "icon": {
+        "type": "filetype",
+        "path": "public.jpeg"
+      }
+    },
+    {
+      "valid": false,
+      "uid": "alfredapp",
+      "title": "Alfred Website",
+      "subtitle": "https://www.alfredapp.com/",
+      "arg": "alfredapp.com",
+      "autocomplete": "Alfred Website",
+      "quicklookurl": "https://www.alfredapp.com/",
+      "mods": {
+        "alt": {
+          "valid": true,
+          "arg": "alfredapp.com/powerpack",
+          "subtitle": "https://www.alfredapp.com/powerpack/"
+        },
+        "cmd": {
+          "valid": true,
+          "arg": "alfredapp.com/powerpack/buy/",
+          "subtitle": "https://www.alfredapp.com/powerpack/buy/"
+        }
+      },
+      "text": {
+        "copy": "https://www.alfredapp.com/ (text here to copy)",
+        "largetype": "https://www.alfredapp.com/ (text here for large type)"
+      }
+    }
+  ]
+}
 ```
 
 ### Releasing

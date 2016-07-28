@@ -1,3 +1,7 @@
+## [2.0.1] - 2016-07-28
+### Fixed
+- Rake task now cleans `Don't Export`-ed environment vars.
+
 ## [2.0.0] - 2016-05-15
 ### Added
 - `Alphred::Items[...]` convenience method.

@@ -53,10 +53,10 @@ Can't tag #{version}: dirty working directory.
 
   def clean_vars(dir)
     info_plist = File.join(dir, 'info.plist')
-
     vars = `/usr/libexec/PlistBuddy -c "Print :variablesdontexport" #{info_plist}`
-    vars = vars.split("\n")[1..-2].map(&:strip)
+    return if vars.empty?
 
+    vars = vars.split("\n")[1..-2].map(&:strip)
     vars.each do |var|
       sh "/usr/libexec/PlistBuddy -c \"Set :variables:#{var} ''\" #{info_plist}"
     end

@@ -1,3 +1,7 @@
+## [Unreleased]
+### Fixed
+- Don't fail when there aren't environment vars to clean
+
 ## [2.0.1] - 2016-07-28
 ### Fixed
 - Rake task now cleans `Don't Export`-ed environment vars.

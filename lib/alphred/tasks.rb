@@ -35,6 +35,18 @@ Can't tag #{version}: dirty working directory.
     end
   end
 
+  desc 'Build for Travis'
+  task :travis do
+    args = %w[ --standalone
+               --path vendor/bundle
+               --without development test ]
+    sh "bundle install #{args.join(' ')}"
+
+    clean_vars(File.expand_path(__FILE__))
+
+    sh "zip -rq #{ENV['TRAVIS_REPO_SLUG'].split(?/).last} *"
+  end
+
   def restore_bundler_config
     path = File.join(workflow_dir, '.bundle', 'config')
     config = File.read(path)

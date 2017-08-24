@@ -1,6 +1,7 @@
 ## [Unreleased]
 ### Fixed
 - Don't fail when there aren't environment vars to clean
+- Always prefix the version with a "v"
 
 ## [2.0.1] - 2016-07-28
 ### Fixed

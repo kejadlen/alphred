@@ -45,8 +45,8 @@ Can't tag #{version}: dirty working directory.
 
   def vendor_deps
     args = %w[ --standalone
-                   --path vendor/bundle
-                   --without development test ]
+               --path vendor/bundle
+               --without development test ]
     cmd = "bundle install #{args.join(' ')}"
     sh "chruby-exec 2.0.0 -- #{cmd}"
   end

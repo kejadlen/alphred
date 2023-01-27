@@ -20,8 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'builder', '~> 3.2'
 
-  spec.add_development_dependency 'bundler', '~> 1.10'
+  spec.add_development_dependency 'bundler', '>= 2.2.33'
   spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'listen', '~> 3.0.0'
   spec.add_development_dependency 'minitest'
 end
